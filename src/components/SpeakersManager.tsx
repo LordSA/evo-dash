@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Speaker } from "@/types/database";
 import { Plus, Pencil, Trash2, Upload, Loader2, Users, Search, Briefcase, Award } from "lucide-react";
 import { supabase, isSupabaseConfigured, uploadMediaFile } from "@/lib/supabase";
+import { getErrorMessage } from "@/lib/supabase";
 
 interface Props {
   speakers: Speaker[];
@@ -72,7 +73,7 @@ export default function SpeakersManager({ speakers, onRefresh }: Props) {
     if (isSupabaseConfigured) {
       const { error } = await supabase.from("speakers").delete().eq("id", id);
       if (error) {
-        alert("Failed to delete speaker: " + error.message);
+        alert("Delete failed: " + getErrorMessage(error));
         return;
       }
     } else {

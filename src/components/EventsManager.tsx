@@ -20,6 +20,7 @@ import {
   Tag
 } from "lucide-react";
 import { supabase, isSupabaseConfigured, uploadMediaFile } from "@/lib/supabase";
+import { getErrorMessage } from "@/lib/supabase";
 import EventCardPreview from "./EventCardPreview";
 
 interface Props {
@@ -134,7 +135,7 @@ export default function EventsManager({ events, onRefresh }: Props) {
         .update({ is_completed: nextState, updated_at: new Date().toISOString() })
         .eq("id", event.id);
       if (error) {
-        alert("Failed to update status: " + error.message);
+        alert("Status update failed: " + getErrorMessage(error));
         return;
       }
     } else {
@@ -155,7 +156,7 @@ export default function EventsManager({ events, onRefresh }: Props) {
         .update({ is_closed: nextState, updated_at: new Date().toISOString() })
         .eq("id", event.id);
       if (error) {
-        alert("Failed to update registration status: " + error.message);
+        alert("Registration status update failed: " + getErrorMessage(error));
         return;
       }
     } else {
@@ -174,7 +175,7 @@ export default function EventsManager({ events, onRefresh }: Props) {
     if (isSupabaseConfigured) {
       const { error } = await supabase.from("events").delete().eq("id", id);
       if (error) {
-        alert("Failed to delete event: " + error.message);
+        alert("Delete failed: " + getErrorMessage(error));
         return;
       }
     } else {

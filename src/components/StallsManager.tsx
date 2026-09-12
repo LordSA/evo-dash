@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { StallExpo } from "@/types/database";
 import { Plus, Pencil, Trash2, Upload, Loader2, Store, Search } from "lucide-react";
 import { supabase, isSupabaseConfigured, uploadMediaFile } from "@/lib/supabase";
+import { getErrorMessage } from "@/lib/supabase";
 
 interface Props {
   stalls: StallExpo[];
@@ -70,7 +71,7 @@ export default function StallsManager({ stalls, onRefresh }: Props) {
     if (isSupabaseConfigured) {
       const { error } = await supabase.from("stalls_and_expos").delete().eq("id", id);
       if (error) {
-        alert("Failed to delete stall: " + error.message);
+        alert("Delete failed: " + getErrorMessage(error));
         return;
       }
     } else {

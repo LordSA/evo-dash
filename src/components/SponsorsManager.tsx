@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Sponsor } from "@/types/database";
 import { Plus, Pencil, Trash2, Upload, Loader2, Sparkles, Search, ShieldCheck } from "lucide-react";
 import { supabase, isSupabaseConfigured, uploadMediaFile } from "@/lib/supabase";
+import { getErrorMessage } from "@/lib/supabase";
 
 interface Props {
   sponsors: Sponsor[];
@@ -70,7 +71,7 @@ export default function SponsorsManager({ sponsors, onRefresh }: Props) {
     if (isSupabaseConfigured) {
       const { error } = await supabase.from("sponsors").delete().eq("id", id);
       if (error) {
-        alert("Failed to delete sponsor: " + error.message);
+        alert("Delete failed: " + getErrorMessage(error));
         return;
       }
     } else {
