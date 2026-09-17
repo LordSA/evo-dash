@@ -19,6 +19,7 @@ import { ToastProvider, useToast } from "@/components/ToastContext";
 function DashboardContent() {
   const [activeTab, setActiveTab] = useState<"events" | "stalls" | "speakers" | "sponsors">("events");
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const [events, setEvents] = useState<EventItem[]>([]);
   const [stalls, setStalls] = useState<StallExpo[]>([]);
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
@@ -41,10 +42,10 @@ function DashboardContent() {
         setSpeakers(spRes.data || []);
         setSponsors(spoRes.data || []);
       } else {
-        const storedEvents = localStorage.getItem("evolvia_events");
-        const storedStalls = localStorage.getItem("evolvia_stalls");
-        const storedSpeakers = localStorage.getItem("evolvia_speakers");
-        const storedSponsors = localStorage.getItem("evolvia_sponsors");
+        const storedEvents = typeof window !== "undefined" ? localStorage.getItem("evolvia_events") : null;
+        const storedStalls = typeof window !== "undefined" ? localStorage.getItem("evolvia_stalls") : null;
+        const storedSpeakers = typeof window !== "undefined" ? localStorage.getItem("evolvia_speakers") : null;
+        const storedSponsors = typeof window !== "undefined" ? localStorage.getItem("evolvia_sponsors") : null;
 
         setEvents(storedEvents ? JSON.parse(storedEvents) : []);
         setStalls(storedStalls ? JSON.parse(storedStalls) : []);
@@ -64,8 +65,29 @@ function DashboardContent() {
   }, [showToast]);
 
   useEffect(() => {
+    setMounted(true);
     loadData();
   }, [loadData]);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-[#0b0c10] text-slate-100 flex flex-col">
+        <header className="sticky top-0 z-40 bg-[#0e1017] border-b border-[#1f2336]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div>
+                <h1 className="text-base font-bold text-white tracking-tight">
+                  Evolvia Admin
+                </h1>
+                <p className="text-xs text-slate-400">Event and Content Manager</p>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0b0c10] text-slate-100 flex flex-col">
