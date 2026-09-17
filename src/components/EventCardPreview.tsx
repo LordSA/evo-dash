@@ -29,10 +29,10 @@ export default function EventCardPreview({ event }: Props) {
         </span>
       </div>
 
-      {/* Preview Card */}
+      {/* Preview Card (3:4 Ratio) */}
       <div className="max-w-xs mx-auto">
         {isPre ? (
-          /* Pre-Event Card (3:4 Ratio) */
+          /* Pre-Event Card */
           <div
             className="group relative cursor-pointer rounded-xl bg-[#161925] border border-[#23283e] p-3 transition-colors hover:border-[#383f60]"
             onMouseEnter={() => setIsHovered(true)}
@@ -73,9 +73,9 @@ export default function EventCardPreview({ event }: Props) {
             </div>
           </div>
         ) : (
-          /* Main Event Card (16:9 Banner) */
-          <div className="group relative rounded-xl bg-[#161925] border border-[#23283e] p-3.5 transition-colors hover:border-[#383f60]">
-            <div className="relative aspect-video rounded-lg overflow-hidden bg-black/60 border border-white/5 mb-3">
+          /* Main Event Card (3:4 Poster Ratio) */
+          <div className="group relative rounded-xl bg-[#161925] border border-[#23283e] p-3 transition-colors hover:border-[#383f60]">
+            <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-black/60 border border-white/5 mb-2.5">
               {event.is_closed ? (
                 <div className="absolute z-20 top-2 left-2 px-2 py-0.5 bg-rose-950/90 text-rose-300 text-[10px] font-semibold rounded">
                   Registration Closed
@@ -94,41 +94,41 @@ export default function EventCardPreview({ event }: Props) {
                 />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 text-xs p-4 text-center">
-                  <span className="text-slate-400 font-medium">16:9 Banner</span>
+                  <span className="text-slate-400 font-medium">3:4 Poster</span>
                   <span className="text-[10px] text-slate-600 mt-0.5">Upload image to preview</span>
                 </div>
               )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="px-0.5 space-y-1.5">
               <div>
                 <h4 className="text-sm font-semibold text-white truncate">
                   {event.name || "Event Name"}
                 </h4>
                 {event.spec && (
-                  <p className="text-xs text-indigo-400 font-medium">{event.spec}</p>
+                  <p className="text-xs text-indigo-400 font-medium truncate">{event.spec}</p>
                 )}
               </div>
 
               {(event.date_time || event.venue) && (
-                <div className="text-[11px] text-slate-400 space-y-0.5 pt-1">
+                <div className="text-[11px] text-slate-400 space-y-0.5 pt-0.5">
                   {event.date_time && (
                     <div className="flex items-center gap-1.5 text-slate-300 truncate">
                       <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
-                      <span>{event.date_time}</span>
+                      <span className="truncate">{event.date_time}</span>
                     </div>
                   )}
                   {event.venue && (
                     <div className="flex items-center gap-1.5 text-slate-400 truncate">
                       <MapPin className="w-3 h-3 text-slate-500 shrink-0" />
-                      <span>{event.venue}</span>
+                      <span className="truncate">{event.venue}</span>
                     </div>
                   )}
                 </div>
               )}
 
               {event.link && (
-                <div className="pt-1.5">
+                <div className="pt-1">
                   <a
                     href={event.link}
                     target="_blank"

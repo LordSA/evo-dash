@@ -439,17 +439,17 @@ export default function EventsManager({ events, onRefresh }: Props) {
           </button>
         </div>
       ) : viewMode === "grid" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filteredEvents.map(event => {
             const isPre = event.type === "pre_event";
             return (
               <div
                 key={event.id}
-                className="bg-[#12141d] border border-[#1f2336] hover:border-[#2b314a] rounded-xl p-3.5 flex flex-col justify-between transition-colors"
+                className="bg-[#12141d] border border-[#1f2336] hover:border-[#2b314a] rounded-xl p-3 flex flex-col justify-between transition-colors"
               >
                 <div>
                   {/* Top Badges & Reorder */}
-                  <div className="flex items-center justify-between mb-2.5">
+                  <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-1.5">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
                         isPre
@@ -481,10 +481,8 @@ export default function EventsManager({ events, onRefresh }: Props) {
                     </div>
                   </div>
 
-                  {/* Poster Thumbnail */}
-                  <div className={`relative rounded-lg overflow-hidden bg-black/50 border border-white/5 mb-3 ${
-                    isPre ? "aspect-[3/4] max-h-44 mx-auto" : "aspect-video"
-                  }`}>
+                  {/* 3:4 Poster Thumbnail */}
+                  <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-black/50 border border-white/5 mb-2.5">
                     {event.poster_url ? (
                       <img
                         src={event.poster_url}
@@ -494,8 +492,8 @@ export default function EventsManager({ events, onRefresh }: Props) {
                         }`}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-500 text-xs">
-                        <span>No Image</span>
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 text-xs">
+                        <span>No Poster</span>
                       </div>
                     )}
 
@@ -532,7 +530,7 @@ export default function EventsManager({ events, onRefresh }: Props) {
 
                   {/* Meta */}
                   {(event.date_time || event.venue) && (
-                    <div className="mt-2.5 pt-2.5 border-t border-[#1f2336] text-[11px] text-slate-400 space-y-0.5">
+                    <div className="mt-2 pt-2 border-t border-[#1f2336] text-[11px] text-slate-400 space-y-0.5">
                       {event.date_time && (
                         <div className="flex items-center gap-1.5 text-slate-300 truncate">
                           <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
@@ -550,22 +548,22 @@ export default function EventsManager({ events, onRefresh }: Props) {
                 </div>
 
                 {/* Bottom Inline Toggles & Actions */}
-                <div className="mt-3.5 pt-2.5 border-t border-[#1f2336] flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-1.5">
+                <div className="mt-3 pt-2 border-t border-[#1f2336] flex items-center justify-between gap-1.5">
+                  <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleInlineToggle(event, "is_completed")}
-                      className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-colors ${
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-medium border transition-colors ${
                         event.is_completed
                           ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
                           : "bg-[#0e1017] text-slate-400 border-[#1f2336] hover:text-white"
                       }`}
                     >
-                      {event.is_completed ? "Completed" : "Mark Done"}
+                      {event.is_completed ? "Done" : "Mark Done"}
                     </button>
 
                     <button
                       onClick={() => handleInlineToggle(event, "is_closed")}
-                      className={`px-2 py-0.5 rounded text-[10px] font-medium border transition-colors ${
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-medium border transition-colors ${
                         event.is_closed
                           ? "bg-rose-500/20 text-rose-300 border-rose-500/30"
                           : "bg-[#0e1017] text-slate-400 border-[#1f2336] hover:text-white"
@@ -739,7 +737,7 @@ export default function EventsManager({ events, onRefresh }: Props) {
                           : "bg-[#0e1017] border-[#1f2336] text-slate-400 hover:text-white"
                       }`}
                     >
-                      Main Event (16:9 Banner)
+                      Main Event (3:4 Poster)
                     </button>
                     <button
                       type="button"
@@ -855,7 +853,7 @@ export default function EventsManager({ events, onRefresh }: Props) {
                 <div className="p-3 rounded-lg bg-[#0e1017] border border-[#1f2336] space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-medium text-slate-300">
-                      Poster Image ({formData.type === "pre_event" ? "3:4" : "16:9"})
+                      Poster Image (3:4 Ratio)
                     </span>
                     {uploadingPoster && (
                       <span className="text-[11px] text-indigo-400 flex items-center gap-1">
